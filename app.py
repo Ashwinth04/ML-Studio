@@ -1,7 +1,8 @@
 import streamlit as st
-from temp_model import *
+from models import *
 import pandas as pd
 import numpy as np
+from nn import *
 
 
 # Main
@@ -13,7 +14,7 @@ Drag, drop, and build powerful ML models. Our intuitive studio empowers everyone
 
 # Side bar
 st.sidebar.subheader("Setup your Problem Here")
-problem_type = st.sidebar.selectbox("Pick your Problem Type", ["Regression", "Classification", "Clustering"])\
+problem_type = st.sidebar.selectbox("Pick your Problem Type", ["Regression", "Classification", "Clustering", "Image Classification"])
 
 if problem_type == "Regression":
     state = 1
@@ -24,12 +25,16 @@ elif problem_type == "Clustering":
 else:
     state = 4
 
-dataset_file = st.sidebar.file_uploader("Upload your Dataset")
-st.subheader("Your Dataset:-")
-df = pd.read_csv(dataset_file)
-st.dataframe(df)
-if state == 1 or state == 2:
-    target_y = st.sidebar.text_input("Enter the Target Variable Column Name")
+if state == 4:
+    dataset_file = st.sidebar.file_uploader("Upload your Dataset", type=['zip'])
+else:
+    dataset_file = st.sidebar.file_uploader("Upload your Dataset", type=['csv'])
+if dataset_file:
+    st.subheader("Your Dataset:-")
+    df = pd.read_csv(dataset_file)
+    st.dataframe(df)
+    if state == 1 or state == 2:
+        target_y = st.sidebar.text_input("Enter the Target Variable Column Name (Leave Blank to use Last Column)")
 
 
 if st.sidebar.button("Train"):
@@ -133,15 +138,3 @@ if st.sidebar.button("Train"):
 
     st.subheader("Comparision Table")
     st.dataframe(comp_table)
-
-    st.sidebar.subheader("Test your Model Here")
-    if state == 1:
-        model_name = st.sidebar.selectbox("Pick your Model", ["Best Model"] + regression_models)
-    elif state == 2:
-        model_name = st.sidebar.selectbox("Pick your Model", ["Best Model"] + classification_models)
-    elif state == 3:
-        pass
-    else:
-        pass
-    
-    

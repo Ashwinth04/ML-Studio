@@ -12,9 +12,8 @@ from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 import pandas as pd
 
 class Models:
-    def __init__(self,file):
-        self.file = file
-        self.df = pd.read_csv(file)
+    def __init__(self,dataframe):
+        self.df = dataframe
         self.X = None
         self.y = None
 
@@ -371,9 +370,9 @@ class Models:
         labels = dbscan.fit_predict(X_scaled)
         return dbscan, labels
 
-    def predict(self,model,x):
-        answer = model.predict(x)
-        return answer
+    # def predict(self,model,x):
+    #     answer = model.predict(x)
+    #     return answer
     
     def pick_best_classifier(self):
         model_name,model,opt_score = "",None,0.0
@@ -426,12 +425,3 @@ class Models:
     
     def return_all_clusters(self):
         pass
-    
-s = Models("iris.data.csv")
-s.clean_and_scale_dataset()
-# model, labels = s.dbscan()
-# print(len(labels))
-classifiers, name,model,score = s.pick_best_classifier()
-for name,tup in classifiers.items():
-    print(f"{name}: {tup[1]}")
-# print(f"{name}: {score}")

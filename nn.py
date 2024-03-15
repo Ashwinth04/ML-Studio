@@ -96,18 +96,18 @@ class NeuralNetwork:
         model.save('classification_model.h5')
         print("Model is trained")
 
-    def predict(self,path_to_img):
-            model = load_model('classification_model.h5')
-            img = cv2.imread(path_to_img)
-            img = img / 255.0
-            resized_img = tensorflow.image.resize(img, (150, 150))
-            yhat = model.predict(np.expand_dims(resized_img, 0))
-            index = np.argmax(yhat)
-            class_list = os.listdir(os.path.join('directory','training'))
-            return class_list[index]
+    # def predict(self,path_to_img):
+    #         model = load_model('classification_model.h5')
+    #         img = cv2.imread(path_to_img)
+    #         img = img / 255.0
+    #         resized_img = tensorflow.image.resize(img, (150, 150))
+    #         yhat = model.predict(np.expand_dims(resized_img, 0))
+    #         index = np.argmax(yhat)
+    #         class_list = os.listdir(os.path.join('directory','training'))
+    #         return class_list[index]
     
-m = NeuralNetwork(os.path.join('image_classification','PetImages'))
-m.make_train_val_dirs()
-m.create_dataset()
-m.train_val_gens()
-m.model()
+# m = NeuralNetwork(os.path.join('image_classification','PetImages'))
+# m.make_train_val_dirs()
+# m.create_dataset()
+# m.train_val_gens()
+# m.model()
