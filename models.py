@@ -394,6 +394,7 @@ class Models:
     ########################## Clustering ####################################
 
     def kmeans(self,num_clusters = 5):
+        X_scaled, _ = self.clean_and_scale_dataset()
         if(num_clusters == -1):
             sil_scores = []
             for i in range(2,11):
@@ -402,7 +403,6 @@ class Models:
                 sil_score = silhouette_score(X_scaled,labels)
                 sil_scores.append(sil_score)
             num_clusters = np.argmax(sil_scores) + 2
-        X_scaled, _ = self.clean_and_scale_dataset()
         kmeans = KMeans(n_clusters=num_clusters,random_state=42)
         labels = kmeans.fit_predict(X_scaled)
         sil_score = silhouette_score(X_scaled,labels)
@@ -414,6 +414,7 @@ class Models:
         return kmeans, labels, metrics
     
     def agglomerative_clustering(self,num_clusters = 5):
+        X_scaled, _ = self.clean_and_scale_dataset()
         if(num_clusters == -1):
             sil_scores = []
             for i in range(2,11):
@@ -422,7 +423,6 @@ class Models:
                 sil_score = silhouette_score(X_scaled,labels)
                 sil_scores.append(sil_score)
             num_clusters = np.argmax(sil_scores) + 2
-        X_scaled, _ = self.clean_and_scale_dataset()
         agg = AgglomerativeClustering(n_clusters=num_clusters)
         labels = agg.fit_predict(X_scaled)
         sil_score = silhouette_score(X_scaled,labels)
@@ -501,9 +501,11 @@ class Models:
     def return_all_clusters(self):
         pass
 
-df = pd.read_csv(os.path.join('HousingData.csv'))
+df = pd.read_csv(os.path.join('iris.data.csv'))
 # print(df)
 s = Models(df)
 s.clean_and_scale_dataset()
-classifiers,model_name,model,opt = s.pick_best_regressor()
-print(classifiers)
+# classifiers,model_name,model,opt = s.pick_best_regressor()
+# print(classifiers)
+# model,labels,metrics = s.dbscan()
+# print(metrics)

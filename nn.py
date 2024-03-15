@@ -1,6 +1,6 @@
 import tensorflow
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications import VGG16
+from tensorflow.keras.applications import VGG16,MobileNetV2,ResNet50
 from tensorflow.keras.models import Model, load_model
 import matplotlib.pyplot as plt
 import numpy as np
@@ -80,7 +80,7 @@ class NeuralNetwork:
         print("Generators created !")
     
 
-    def model(self):
+    def model_vgg(self):
         num_classes = len(os.listdir(os.path.join('directory', 'training')))
         base_model = VGG16(weights = 'imagenet',include_top = False,input_shape = (150,150,3))
         for layer in base_model.layers:
@@ -93,9 +93,42 @@ class NeuralNetwork:
         model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy'])
         history = model.fit(self.train_gen,validation_data = self.val_gen,epochs = 10)
         self.history = history
-        model.save('classification_model.h5')
+        model.save('vgg_model.h5')
         print("Model is trained")
 
+    def model_mobilenetv2(self):
+        num_classes = len(os.listdir(os.path.join('directory', 'training')))
+        base_model = MobileNetV2(weights = 'imagenet',include_top = False,input_shape = (150,150,3))
+        for layer in base_model.layers:
+            layer.trainable = False
+            
+        X = base_model.output
+        X = tensorflow.keras.layers.GlobalAveragePooling2D()(X)
+        X = tensorflow.keras.layers.Dense(1024,activation='relu')(X)
+        output = tensorflow.keras.layers.Dense(num_classes,activation = 'softmax')(X)
+        model = Model(inputs = base_model.input,outputs = output)
+        model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy'])
+        history = model.fit(self.train_gen,validation_data = self.val_gen,epochs = 10)
+        self.history = history
+        model.save('mobilenet_model.h5')
+        print("Model is trained")
+
+    def resnet(self):
+        num_classes = len(os.listdir(os.path.join('directory', 'training')))
+        base_model = ResNet50(weights = 'imagenet',include_top = False,input_shape = (150,150,3))
+        for layer in base_model.layers:
+            layer.trainable = False
+            
+        X = base_model.output
+        X = tensorflow.keras.layers.GlobalAveragePooling2D()(X)
+        X = tensorflow.keras.layers.Dense(1024,activation='relu')(X)
+        output = tensorflow.keras.layers.Dense(num_classes,activation = 'softmax')(X)
+        model = Model(inputs = base_model.input,outputs = output)
+        model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy'])
+        history = model.fit(self.train_gen,validation_data = self.val_gen,epochs = 10)
+        self.history = history
+        model.save('resnet_model.h5')
+        print("Model is trained")
     # def predict(self,path_to_img):
     #         model = load_model('classification_model.h5')
     #         img = cv2.imread(path_to_img)
