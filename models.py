@@ -1,6 +1,6 @@
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, r2_score, mean_absolute_error,median_absolute_error, explained_variance_score, precision_score, recall_score,f1_score
+from sklearn.metrics import accuracy_score, r2_score, mean_absolute_error,median_absolute_error, explained_variance_score, precision_score, recall_score,f1_score,silhouette_score,davies_bouldin_score
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn import tree
 from sklearn import svm
@@ -9,7 +9,10 @@ from sklearn.ensemble import AdaBoostClassifier, GradientBoostingClassifier, Ran
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
+from sklearn.model_selection import cross_val_score
+import numpy as np
 import pandas as pd
+import os
 
 class Models:
     def __init__(self,dataframe):
@@ -26,7 +29,7 @@ class Models:
         return self.X,self.y
     
     ####################### Classifiers ################################
-    def SVM(self):
+    def SVM(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier = svm.SVC()
         classifier.fit(X_train,y_train)
@@ -35,15 +38,17 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
     
-    def logistic_regression(self):
+    def logistic_regression(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier =  LogisticRegression()
         classifier.fit(X_train,y_train)
@@ -52,15 +57,17 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
     
-    def dtree_classifier(self):
+    def dtree_classifier(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier = tree.DecisionTreeClassifier()
         classifier.fit(X_train,y_train)
@@ -69,15 +76,17 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
     
-    def knn_classifier(self):
+    def knn_classifier(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier = KNeighborsClassifier()
         classifier.fit(X_train,y_train)
@@ -86,15 +95,17 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
     
-    def naivebayes(self):
+    def naivebayes(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier = GaussianNB()
         classifier.fit(X_train,y_train)
@@ -103,15 +114,17 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
     
-    def adaboost(self):
+    def adaboost(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier = AdaBoostClassifier()
         classifier.fit(X_train,y_train)
@@ -120,15 +133,17 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
     
-    def mlp(self):
+    def mlp(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier = MLPClassifier()
         classifier.fit(X_train,y_train)
@@ -137,15 +152,17 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
     
-    def gradient_boost(self):
+    def gradient_boost(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier = GradientBoostingClassifier()
         classifier.fit(X_train,y_train)
@@ -154,15 +171,17 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
     
-    def random_forest_classifier(self):
+    def random_forest_classifier(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         classifier = RandomForestClassifier()
         classifier.fit(X_train,y_train)
@@ -171,16 +190,18 @@ class Models:
         precision = precision_score(y_test,y_pred,average = "micro")
         recall = recall_score(y_test,y_pred,average = "micro")
         f1score = f1_score(y_test,y_pred,average = "micro")
+        cross_val_scores = cross_val_score(classifier,self.X,self.y,cv = k)
         metrics = {
             "Accuracy":accuracy,
             "Precision":precision,
             "Recall":recall,
-            "F1-score":f1score
+            "F1-score":f1score,
+            "Cross val scores":cross_val_scores
         }
         return classifier,metrics
 
     ##########################  Regressors ##################################
-    def linear_regression(self):
+    def linear_regression(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = LinearRegression()
         regressor.fit(X_train,y_train)
@@ -189,15 +210,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def dtree_regressor(self):
+    def dtree_regressor(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = tree.DecisionTreeRegressor()
         regressor.fit(X_train,y_train)
@@ -206,15 +229,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def SVR(self):
+    def SVR(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = svm.SVR()
         regressor.fit(X_train,y_train)
@@ -223,15 +248,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def ridge_regression(self):
+    def ridge_regression(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = Ridge()
         regressor.fit(X_train,y_train)
@@ -240,15 +267,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def lasso(self):
+    def lasso(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = Lasso()
         regressor.fit(X_train,y_train)
@@ -257,15 +286,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def elasticnet(self):
+    def elasticnet(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = ElasticNet()
         regressor.fit(X_train,y_train)
@@ -274,15 +305,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def random_forest_regressor(self):
+    def random_forest_regressor(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = RandomForestRegressor()
         regressor.fit(X_train,y_train)
@@ -291,15 +324,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def mlp_regressor(self):
+    def mlp_regressor(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = MLPRegressor()
         regressor.fit(X_train,y_train)
@@ -308,15 +343,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def knn_regressor(self):
+    def knn_regressor(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = KNeighborsRegressor()
         regressor.fit(X_train,y_train)
@@ -325,15 +362,17 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
-    def gradient_boost_regressor(self):
+    def gradient_boost_regressor(self,k = 5):
         X_train, X_test, y_train, y_test = train_test_split(self.X,self.y,test_size=0.2,random_state=42)
         regressor = GradientBoostingRegressor()
         regressor.fit(X_train,y_train)
@@ -342,33 +381,69 @@ class Models:
         mae = mean_absolute_error(y_test,y_pred)
         mde = median_absolute_error(y_test,y_pred)
         evs = explained_variance_score(y_test,y_pred,force_finite=False)
+        cross_val_scores = cross_val_score(regressor,self.X,self.y,cv = k)
         metrics = {
             "R2 score": score,
             "Mean Absolute Error":mae,
             "Median Absolute Error":mde,
-            "Explained Variance Score":evs
+            "Explained Variance Score":evs,
+            "Cross val scores":cross_val_scores
         }
         return regressor,metrics
     
     ########################## Clustering ####################################
 
-    def kmeans(self,num_clusters):
+    def kmeans(self,num_clusters = 5):
+        if(num_clusters == -1):
+            sil_scores = []
+            for i in range(2,11):
+                kmeans = KMeans(n_clusters=num_clusters,random_state=42)
+                labels = kmeans.fit_predict(X_scaled)
+                sil_score = silhouette_score(X_scaled,labels)
+                sil_scores.append(sil_score)
+            num_clusters = np.argmax(sil_scores) + 2
         X_scaled, _ = self.clean_and_scale_dataset()
         kmeans = KMeans(n_clusters=num_clusters,random_state=42)
         labels = kmeans.fit_predict(X_scaled)
-        return kmeans, labels
+        sil_score = silhouette_score(X_scaled,labels)
+        db_score = davies_bouldin_score(X_scaled,labels)
+        metrics = {
+            "Silhouette score":sil_score,
+            "Davies Bouldin score":db_score
+        }
+        return kmeans, labels, metrics
     
-    def agglomerative_clustering(self,num_clusters):
+    def agglomerative_clustering(self,num_clusters = 5):
+        if(num_clusters == -1):
+            sil_scores = []
+            for i in range(2,11):
+                kmeans = KMeans(n_clusters=num_clusters,random_state=42)
+                labels = kmeans.fit_predict(X_scaled)
+                sil_score = silhouette_score(X_scaled,labels)
+                sil_scores.append(sil_score)
+            num_clusters = np.argmax(sil_scores) + 2
         X_scaled, _ = self.clean_and_scale_dataset()
         agg = AgglomerativeClustering(n_clusters=num_clusters)
         labels = agg.fit_predict(X_scaled)
-        return agg, labels
+        sil_score = silhouette_score(X_scaled,labels)
+        db_score = davies_bouldin_score(X_scaled,labels)
+        metrics = {
+            "Silhouette score":sil_score,
+            "Davies Bouldin score":db_score
+        }
+        return agg, labels, metrics
     
     def dbscan(self,eps=0.5, min_samples = 5):
         X_scaled, _ = self.clean_and_scale_dataset()
         dbscan = DBSCAN(eps = eps,min_samples=min_samples)
         labels = dbscan.fit_predict(X_scaled)
-        return dbscan, labels
+        sil_score = silhouette_score(X_scaled,labels)
+        db_score = davies_bouldin_score(X_scaled,labels)
+        metrics = {
+            "Silhouette score":sil_score,
+            "Davies Bouldin score":db_score
+        }
+        return dbscan, labels, metrics
 
     # def predict(self,model,x):
     #     answer = model.predict(x)
@@ -416,8 +491,8 @@ class Models:
 
         for name,tup in regressors.items():
             clf,score = tup
-            if(score > opt_score):
-                opt_score = score
+            if(score['R2 score'] > opt_score):
+                opt_score = score['R2 score']
                 model = clf
                 model_name = name
 
@@ -425,3 +500,10 @@ class Models:
     
     def return_all_clusters(self):
         pass
+
+df = pd.read_csv(os.path.join('HousingData.csv'))
+# print(df)
+s = Models(df)
+s.clean_and_scale_dataset()
+classifiers,model_name,model,opt = s.pick_best_regressor()
+print(classifiers)
