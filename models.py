@@ -441,7 +441,7 @@ class Models:
         }
         return agg, labels, metrics, num_clusters
     
-    def dbscan(self,eps=0.5, min_samples = 5):
+    def dbscan(self,eps=2, min_samples = 5):
         X_scaled, _ = self.clean_and_scale_dataset()
         dbscan = DBSCAN(eps = eps,min_samples=min_samples)
         labels = dbscan.fit_predict(X_scaled)
@@ -509,11 +509,11 @@ class Models:
     def return_all_clusters(self):
         pass
 
-df = pd.read_csv(os.path.join('iris.data.csv'))
-# print(df)
-s = Models(df)
-s.clean_and_scale_dataset()
-# classifiers,model_name,model,opt = s.pick_best_regressor()
-# print(classifiers)
-model,labels,metrics,k = s.kmeans(-1)
-print(metrics,k)
+# df = pd.read_csv(os.path.join('iris.data.csv'))
+# # print(df)
+# s = Models(df)
+# s.clean_and_scale_dataset()
+# # classifiers,model_name,model,opt = s.pick_best_regressor()
+# # print(classifiers)
+# model,labels,metrics,k = s.kmeans(-1)
+# print(metrics,k)
