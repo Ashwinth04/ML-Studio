@@ -1,4 +1,4 @@
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, r2_score, mean_absolute_error,median_absolute_error, explained_variance_score, precision_score, recall_score,f1_score,silhouette_score,davies_bouldin_score
 from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
@@ -22,8 +22,20 @@ class Models:
 
     def clean_and_scale_dataset(self):
         self.df = self.df.dropna()
-        self.X = self.df.drop(columns = self.df.columns[-1])
+        self.X_pre = self.df.drop(columns = self.df.columns[-1])
         self.y = self.df.iloc[:,-1]
+
+        columns = self.X_pre.columns
+        categorical_cols = self.X_pre.select_dtypes(include = ['object']).columns
+        self.X = self.X_pre.copy()
+        encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+        for col in categorical_cols:
+            temp_df = pd.DataFrame(self.X[col])
+            encoded_col = encoder.fit_transform(temp_df)
+            encoded_col_names = encoder.get_feature_names_out([col])
+            self.X = self.X.drop(col, axis=1)
+            self.X = pd.concat([self.X, pd.DataFrame(encoded_col, columns=encoded_col_names)], axis=1)
+        
         scaler = StandardScaler()
         self.X = scaler.fit_transform(self.X)
         return self.X,self.y
