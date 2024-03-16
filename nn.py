@@ -90,7 +90,7 @@ class NeuralNetwork:
         X = tensorflow.keras.layers.Dense(256,activation = 'relu')(X)
         output = tensorflow.keras.layers.Dense(num_classes,activation = 'softmax')(X)
         model = Model(inputs = base_model.input,outputs = output)
-        model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy'])
+        model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy','precision','recall'])
         history = model.fit(self.train_gen,validation_data = self.val_gen,epochs = 10)
         self.history = history
         model.save('vgg_model.h5')
@@ -107,7 +107,7 @@ class NeuralNetwork:
         X = tensorflow.keras.layers.Dense(1024,activation='relu')(X)
         output = tensorflow.keras.layers.Dense(num_classes,activation = 'softmax')(X)
         model = Model(inputs = base_model.input,outputs = output)
-        model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy'])
+        model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy','precision','recall'])
         history = model.fit(self.train_gen,validation_data = self.val_gen,epochs = 10)
         self.history = history
         model.save('mobilenet_model.h5')
@@ -124,7 +124,7 @@ class NeuralNetwork:
         X = tensorflow.keras.layers.Dense(1024,activation='relu')(X)
         output = tensorflow.keras.layers.Dense(num_classes,activation = 'softmax')(X)
         model = Model(inputs = base_model.input,outputs = output)
-        model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy'])
+        model.compile(optimizer = 'Adam',loss = 'categorical_crossentropy',metrics = ['accuracy','precision','recall'])
         history = model.fit(self.train_gen,validation_data = self.val_gen,epochs = 10)
         self.history = history
         model.save('resnet_model.h5')
