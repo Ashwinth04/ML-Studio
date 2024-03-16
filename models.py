@@ -394,44 +394,52 @@ class Models:
     ########################## Clustering ####################################
 
     def kmeans(self,num_clusters = 5):
-        if(num_clusters == -1):
-            sil_scores = []
-            for i in range(2,11):
-                kmeans = KMeans(n_clusters=num_clusters,random_state=42)
+        X_scaled, _ = self.clean_and_scale_dataset()
+        sil_scores = []
+
+        if num_clusters == -1:
+            for i in range(2, 11):
+                kmeans = KMeans(n_clusters=i, random_state=42)
                 labels = kmeans.fit_predict(X_scaled)
-                sil_score = silhouette_score(X_scaled,labels)
+                sil_score = silhouette_score(X_scaled, labels)
                 sil_scores.append(sil_score)
             num_clusters = np.argmax(sil_scores) + 2
-        X_scaled, _ = self.clean_and_scale_dataset()
-        kmeans = KMeans(n_clusters=num_clusters,random_state=42)
-        labels = kmeans.fit_predict(X_scaled)
+            kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+            labels = kmeans.fit_predict(X_scaled)
+        else:
+            kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+            labels = kmeans.fit_predict(X_scaled)
         sil_score = silhouette_score(X_scaled,labels)
         db_score = davies_bouldin_score(X_scaled,labels)
         metrics = {
             "Silhouette score":sil_score,
             "Davies Bouldin score":db_score
         }
-        return kmeans, labels, metrics
+        return kmeans, labels, metrics, num_clusters
     
     def agglomerative_clustering(self,num_clusters = 5):
-        if(num_clusters == -1):
-            sil_scores = []
-            for i in range(2,11):
-                kmeans = KMeans(n_clusters=num_clusters,random_state=42)
-                labels = kmeans.fit_predict(X_scaled)
-                sil_score = silhouette_score(X_scaled,labels)
+        X_scaled, _ = self.clean_and_scale_dataset()
+        sil_scores = []
+
+        if num_clusters == -1:
+            for i in range(2, 11):
+                agg = AgglomerativeClustering(n_clusters=i)
+                labels = agg.fit_predict(X_scaled)
+                sil_score = silhouette_score(X_scaled, labels)
                 sil_scores.append(sil_score)
             num_clusters = np.argmax(sil_scores) + 2
-        X_scaled, _ = self.clean_and_scale_dataset()
-        agg = AgglomerativeClustering(n_clusters=num_clusters)
-        labels = agg.fit_predict(X_scaled)
+            agg = AgglomerativeClustering(n_clusters=num_clusters)
+            labels = agg.fit_predict(X_scaled)
+        else:
+            agg = AgglomerativeClustering(n_clusters=num_clusters)
+            labels = agg.fit_predict(X_scaled)
         sil_score = silhouette_score(X_scaled,labels)
         db_score = davies_bouldin_score(X_scaled,labels)
         metrics = {
             "Silhouette score":sil_score,
             "Davies Bouldin score":db_score
         }
-        return agg, labels, metrics
+        return agg, labels, metrics, num_clusters
     
     def dbscan(self,eps=0.5, min_samples = 5):
         X_scaled, _ = self.clean_and_scale_dataset()
@@ -501,9 +509,11 @@ class Models:
     def return_all_clusters(self):
         pass
 
-df = pd.read_csv(os.path.join('HousingData.csv'))
+df = pd.read_csv(os.path.join('iris.data.csv'))
 # print(df)
 s = Models(df)
 s.clean_and_scale_dataset()
-classifiers,model_name,model,opt = s.pick_best_regressor()
-print(classifiers)
+# classifiers,model_name,model,opt = s.pick_best_regressor()
+# print(classifiers)
+model,labels,metrics,k = s.kmeans(-1)
+print(metrics,k)
