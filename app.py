@@ -2,8 +2,13 @@ import streamlit as st
 from models import *
 import pandas as pd
 import numpy as np
-# import shutil
-# from nn import *
+from zipfile import ZipFile
+from data_visualisation import *
+import os
+from nn import *
+
+
+st.set_page_config(page_title="Machine Learning Studio")
 
 
 # Main
@@ -28,7 +33,6 @@ else:
 
 if state == 4:
     img_zip_file = st.sidebar.file_uploader("Upload your Dataset", type=['zip'])
-    print(img_zip_file.name)
 else:
     dataset_file = st.sidebar.file_uploader("Upload your Dataset", type=['csv'])
 if state != 4:
@@ -191,16 +195,32 @@ if st.session_state['button'] == True:
                 comp_table_flag = 1
     
     else:
-        # comp_table_flag = 0
-        # shutil.unpack_archive(img_zip_file.name)
-        # dir_name = img_zip_file.name.split(".")[0]
-        # nn = NeuralNetwork(dir_name)
-        # nn.make_train_val_dirs()
-        # nn.create_dataset()
-        # nn.train_val_gens()
-        # nn.model()
-        pass
+        comp_table_flag = 0
+        with ZipFile(img_zip_file, "r") as zf:
+            zf.extractall("image_data/")
+        sub_list = os.listdir("image_data/")
+
+        
+        if len(sub_list) > 1:
+            nn = NeuralNetwork("image_data/")
+        else:
+            nn = NeuralNetwork(f"image_data/{sub_list[0]}/")
+        nn.make_train_val_dirs()
+        nn.create_dataset()
+        nn.train_val_gens()
+
+        nn.model_vgg()
+        nn.model_mobilenetv2()
+        nn.resnet()
+
+
+        for root, dirs, files in os.walk("image_data/", topdown=False):
+            for file in files:
+                os.remove(os.path.join(root, file))
+            for dir in dirs:
+                os.rmdir(os.path.join(root, dir))
 
     if comp_table_flag:
         st.subheader("Comparision Table")
         st.dataframe(comp_table)
+        main(comp_table)
