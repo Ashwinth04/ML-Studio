@@ -40,7 +40,12 @@ if state != 4:
             target_y = st.sidebar.text_input("Enter the Target Variable Column Name (Leave Blank to use Last Column)")
 
 
-if st.sidebar.button("Train"):
+train_btn = st.sidebar.button("Train")
+
+if st.session_state.get('button') != True:
+    st.session_state['button'] = train_btn
+
+if st.session_state['button'] == True:
 
     comp_table_flag = 1
 
@@ -140,12 +145,14 @@ if st.sidebar.button("Train"):
             comp_table = pd.DataFrame.from_dict(classifiers_table)
             comp_table.index = metrics
             comp_table = comp_table.transpose()
+        
         else:
             comp_table_flag = 0
+            param_flag = 0
             clustering_models = ["K-Means Clustering", "Agglomerative Clustering", "Density-Based Clustering"]
             num_cluster = st.sidebar.text_input("Enter the Number of Expected Clusters (Leave blank for letting us decide)")
-            eps = st.sidebar.text_input("Radius of the Density (Leave Blank for 0.5)")
-            min_samples = st.sidebar.text_input("Minimum Number of Samples around the Radius (Leave Blank for 5)")
+            eps = st.sidebar.text_input("Radius of the Density (Leave blank for letting us decide)")
+            min_samples = st.sidebar.text_input("Minimum Number of Samples around the Radius (Leave blank for letting us decide)")
 
             if st.sidebar.button("Set Parameters"):
                 if num_cluster != "":
@@ -158,12 +165,12 @@ if st.sidebar.button("Train"):
                     if min_samples == "":
                         dc = list(model.dbscan())
                     else:
-                        dc = list(model.dbscan(min_samples=min_samples))
+                        dc = list(model.dbscan(min_samples=int(min_samples)))
                 else:
                     if min_samples == "":
-                        dc = list(model.dbscan(eps=eps))
+                        dc = list(model.dbscan(eps=int(eps)))
                     else:
-                        dc = list(model.dbscan(eps=eps, min_samples=min_samples))
+                        dc = list(model.dbscan(eps=int(eps), min_samples=int(min_samples)))
 
                 clustering_funcs = {
                     "K-Means Clustering": kc[0],
