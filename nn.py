@@ -4,7 +4,7 @@ from tensorflow.keras.applications import VGG16,MobileNetV2,ResNet50
 from tensorflow.keras.models import Model, load_model
 import matplotlib.pyplot as plt
 import numpy as np
-import cv2
+# import cv2
 import os
 import random
 import shutil
