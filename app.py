@@ -223,4 +223,9 @@ if st.session_state['button'] == True:
     if comp_table_flag:
         st.subheader("Comparision Table")
         st.dataframe(comp_table)
-        main(comp_table)
+        if state == 1:
+            main(state=state,comp_table=comp_table,df = df,model_names=regression_models)
+        elif state == 2:
+            main(state=state,comp_table=comp_table,df=df,model_names=classification_models)
+        else:
+            main(state=state,comp_table=comp_table,df=df,model_names=clustering_models,models = clustering_funcs)
