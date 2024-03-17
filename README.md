@@ -1,6 +1,6 @@
 # ML Studio: Your One-Stop Machine Learning Shop
 
-## Description:-
+## Overview
 ML Studio is a user-friendly web application that empowers you to navigate the world of machine learning, even without extensive coding experience. 
 
 **Key Features:**
@@ -37,21 +37,11 @@ ML Studio is a user-friendly web application that empowers you to navigate the w
 
 **Step-0: Install all necessary Libraries**
 
-Make sure install the following modules before running the program
+Make sure install recommended modules before running the program
 
-- streamlit
-- pandas
-- numpy
-- matplotlib
-- plotly
-- seaborn
-- zipfile
-- os
-- scikit-learn
-- scipy
-- tensorflow
-- random
-- shutil
+```
+pip install -r requirements.txt
+```
 
 **Step-1: Running the Web App**
 
@@ -67,7 +57,7 @@ From the selectbox in the sidebar, pick your desired model
 
 **Step-3: Upload your Dataset**
 
-From the selectbox in the sidebar, pick your desired model
+Upload your Dataset in the widget shown in the sidebar
 
 ![Screenshot of Dataset](Images/upload-dataset.png)
 
@@ -81,9 +71,15 @@ Click Train button once done and let the app do it's magic
 
 ![Screenshot of Comparision Table](Images/comp_table.png)
 
+![Screenshot of Bar and Line Graph](Images/visual-1.png)
+
+![Screenshot of Area and Heatmap Graph](Images/visual-2.png)
+
+![Screenshot of Model Recommendation](Images/visual-3.png)
+
 **Step-6: Hyperparamter Setting (Optional)**
 
-For CLustering and Image Classification, once Train button is clicked, the model expects values for Hyperparameters, which like Target Variable Section, can be left empty or filled by the user and click Set Parameters to get the result
+For Clustering and Image Classification, once Train button is clicked, the model expects values for Hyperparameters, which like Target Variable Section, can be left empty or filled by the user and click Set Parameters to get the result
 
 ![Screenshot of Clustering Result](Images/clustering.png)
 
@@ -128,12 +124,18 @@ Developing ML Studio presented several challenges that we actively tackled to en
 
 * **Explainability of Model Recommendations:**  Simply recommending a model might not be enough for users to understand its strengths and weaknesses. We're working on integrating model interpretability techniques to provide users with insights into the model's decision-making process, fostering trust and better understanding.
 
+* **Image Classification Work:**  This is still in development phase so please refrain from using this feature. We regret the inconvenience caused. 
+
 By addressing these challenges, we continuously improve ML Studio, making it a valuable tool for users of all technical backgrounds to navigate the exciting world of machine learning.
 
+## Demonstration
+
+For the demonstration of the usage of this application, please go the following [YouTube Link]()
 
 
 
-## Project by Team Runtime Error
+
+## Project by Team Runtime Error(VH-251) for Vashisht Hackathon 2024
 
 | Name | Roll Number | Email |
 |:-----|:-----------:|:-----:|
