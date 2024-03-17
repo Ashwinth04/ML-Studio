@@ -8,11 +8,11 @@ import os
 from nn import *
 
 
-st.set_page_config(page_title="Machine Learning Studio")
+st.set_page_config(page_title="Runtime Error's ML Studio")
 
 
 # Main
-st.title("Machine Learning Studio")
+st.title("Machine Learning Studio by Team Runtime Error")
 st.subheader("Welcome to the Machine Learning Studio!")
 st.markdown('''Build. Train. Deploy. Machine Learning Made Easy.
 
@@ -195,32 +195,40 @@ if st.session_state['button'] == True:
                 comp_table_flag = 1
     
     else:
-        comp_table_flag = 0
-        with ZipFile(img_zip_file, "r") as zf:
-            zf.extractall("image_data/")
-        sub_list = os.listdir("image_data/")
+        # comp_table_flag = 0
+        # with ZipFile(img_zip_file, "r") as zf:
+        #     zf.extractall("image_data/")
+        # sub_list = os.listdir("image_data/")
 
         
-        if len(sub_list) > 1:
-            nn = NeuralNetwork("image_data/")
-        else:
-            nn = NeuralNetwork(f"image_data/{sub_list[0]}/")
-        nn.make_train_val_dirs()
-        nn.create_dataset()
-        nn.train_val_gens()
+        # if len(sub_list) > 1:
+        #     nn = NeuralNetwork("image_data/")
+        # else:
+        #     nn = NeuralNetwork(f"image_data/{sub_list[0]}/")
+        # nn.make_train_val_dirs()
+        # nn.create_dataset()
+        # nn.train_val_gens()
 
-        nn.model_vgg()
-        nn.model_mobilenetv2()
-        nn.resnet()
+        # nn.model_vgg()
+        # nn.model_mobilenetv2()
+        # nn.resnet()
 
 
-        for root, dirs, files in os.walk("image_data/", topdown=False):
-            for file in files:
-                os.remove(os.path.join(root, file))
-            for dir in dirs:
-                os.rmdir(os.path.join(root, dir))
+        # for root, dirs, files in os.walk("image_data/", topdown=False):
+        #     for file in files:
+        #         os.remove(os.path.join(root, file))
+        #     for dir in dirs:
+        #         os.rmdir(os.path.join(root, dir))
+        comp_table_flag = 0
+        st.subheader("We are extremely Sorry!")
+        st.markdown("We are currently working on implementing this feature...Check back soon!")
 
     if comp_table_flag:
         st.subheader("Comparision Table")
         st.dataframe(comp_table)
-        main(comp_table)
+        if state == 1:
+            main(state=state,comp_table=comp_table,df = df,model_names=regression_models)
+        elif state == 2:
+            main(state=state,comp_table=comp_table,df=df,model_names=classification_models)
+        else:
+            main(state=state,comp_table=comp_table,df=df,model_names=clustering_models,models = clustering_funcs)
