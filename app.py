@@ -8,11 +8,11 @@ import os
 from nn import *
 
 
-st.set_page_config(page_title="Machine Learning Studio")
+st.set_page_config(page_title="Runtime Error's ML Studio")
 
 
 # Main
-st.title("Machine Learning Studio")
+st.title("Machine Learning Studio by Team Runtime Error")
 st.subheader("Welcome to the Machine Learning Studio!")
 st.markdown('''Build. Train. Deploy. Machine Learning Made Easy.
 

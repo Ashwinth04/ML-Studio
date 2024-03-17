@@ -35,20 +35,10 @@ ML Studio is a user-friendly web application that empowers you to navigate the w
 
 ## How to run this program?
 
-**Step-0: Install all necessary Libraries**
-
-Make sure install recommended modules before running the program
-
-```
-pip install -r requirements.txt
-```
-
 **Step-1: Running the Web App**
 
-Open your terminal in ML-Studio directory and run the following command
-```
-streamlit run app.py
-```
+Open the [Runtime Error - ML Studio Website](https://runtime-error-mlstudio.streamlit.app/) on your preferred browser
+
 **Step-2: Select the model of choice**
 
 From the selectbox in the sidebar, pick your desired model
