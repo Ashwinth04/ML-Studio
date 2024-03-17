@@ -123,8 +123,6 @@ By addressing these challenges, we continuously improve ML Studio, making it a v
 For the demonstration of the usage of this application, please go the following [YouTube Link]()
 
 
-
-
 ## Project by Team Runtime Error(VH-251) for Vashisht Hackathon 2024
 
 | Name | Roll Number | Email |

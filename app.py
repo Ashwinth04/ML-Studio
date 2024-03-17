@@ -32,7 +32,8 @@ else:
     state = 4
 
 if state == 4:
-    img_zip_file = st.sidebar.file_uploader("Upload your Dataset", type=['zip'])
+    st.subheader('We are Sorry!')
+    st.write('''We are currently working on this feature. Please check back later!''')
 else:
     dataset_file = st.sidebar.file_uploader("Upload your Dataset", type=['csv'])
 if state != 4:
@@ -194,31 +195,31 @@ if st.session_state['button'] == True:
                 comp_table = comp_table.transpose()
                 comp_table_flag = 1
     
-    else:
-        comp_table_flag = 0
-        with ZipFile(img_zip_file, "r") as zf:
-            zf.extractall("image_data/")
-        sub_list = os.listdir("image_data/")
+    # else:
+    #     comp_table_flag = 0
+    #     with ZipFile(img_zip_file, "r") as zf:
+    #         zf.extractall("image_data/")
+    #     sub_list = os.listdir("image_data/")
 
         
-        if len(sub_list) > 1:
-            nn = NeuralNetwork("image_data/")
-        else:
-            nn = NeuralNetwork(f"image_data/{sub_list[0]}/")
-        nn.make_train_val_dirs()
-        nn.create_dataset()
-        nn.train_val_gens()
+    #     if len(sub_list) > 1:
+    #         nn = NeuralNetwork("image_data/")
+    #     else:
+    #         nn = NeuralNetwork(f"image_data/{sub_list[0]}/")
+    #     nn.make_train_val_dirs()
+    #     nn.create_dataset()
+    #     nn.train_val_gens()
 
-        nn.model_vgg()
-        nn.model_mobilenetv2()
-        nn.resnet()
+    #     nn.model_vgg()
+    #     nn.model_mobilenetv2()
+    #     nn.resnet()
 
 
-        for root, dirs, files in os.walk("image_data/", topdown=False):
-            for file in files:
-                os.remove(os.path.join(root, file))
-            for dir in dirs:
-                os.rmdir(os.path.join(root, dir))
+    #     for root, dirs, files in os.walk("image_data/", topdown=False):
+    #         for file in files:
+    #             os.remove(os.path.join(root, file))
+    #         for dir in dirs:
+    #             os.rmdir(os.path.join(root, dir))
 
     if comp_table_flag:
         st.subheader("Comparision Table")
