@@ -74,6 +74,13 @@ def threshold_clustering(silhouette_scores, threshold=0.5):
 # Main function for Streamlit app
 def main(state, comp_table=None, X=None, y=None, df=None,model_names=None,models = None):
     if state == 1:  # Regression task
+
+        array_cols = comp_table.dtypes[comp_table.dtypes == 'object'].index
+
+        # Filter out columns with NumPy arrays
+        for col in array_cols:
+            if comp_table[col].apply(lambda x: isinstance(x, np.ndarray)).any():
+                comp_table = comp_table.drop(col, axis=1)
         st.subheader("Bar Graph")
         st.bar_chart(comp_table)
         st.subheader("Line Graph")
@@ -82,6 +89,13 @@ def main(state, comp_table=None, X=None, y=None, df=None,model_names=None,models
         st.area_chart(comp_table)
         st.subheader("Heatmap")
         st.set_option('deprecation.showPyplotGlobalUse', False)
+
+        non_numeric_cols = comp_table.select_dtypes(include=['object']).columns
+        for col in non_numeric_cols:
+            comp_table[col] = pd.to_numeric(comp_table[col], errors='coerce')
+
+        # Replace any remaining non-numeric values with NaN
+        comp_table = comp_table.replace([np.inf, -np.inf], np.nan)
         sns.heatmap(comp_table, annot=True)
         st.pyplot()
         
