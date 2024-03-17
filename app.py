@@ -219,7 +219,7 @@ if st.session_state['button'] == True:
         #         os.remove(os.path.join(root, file))
         #     for dir in dirs:
         #         os.rmdir(os.path.join(root, dir))
-
+        comp_table_flag = 0
         st.subheader("We are extremely Sorry!")
         st.markdown("We are currently working on implementing this feature...Check back soon!")
 
